@@ -8,7 +8,6 @@
                 <field name="name" />
                 <field name="cycle_length" />
                 <field name="start_date" />
-                <field name="auto_generate" />
             </tree>
         </field>
     </record>
@@ -24,7 +23,6 @@
                         <field name="name" />
                         <field name="cycle_length" />
                         <field name="start_date" />
-                        <field name="auto_generate" />
                     </group>
                     <notebook>
                         <page string="Líneas del patrón">

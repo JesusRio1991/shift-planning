@@ -8,7 +8,6 @@ class HrShiftPlanningPattern(models.Model):
     name = fields.Char(string="Nombre", required=True)
     cycle_length = fields.Integer(string="Duración del ciclo")
     start_date = fields.Date(string="Fecha inicio")
-    auto_generate = fields.Boolean(string="Auto-generar")
     line_ids = fields.One2many('hr.shift.planning.pattern.line', 'pattern_id', string="Líneas del patrón")
 
     def generate_shifts(self):
