@@ -6,7 +6,7 @@ class HrShiftPlanningPatternLine(models.Model):
     _order = 'day_number asc'
 
     pattern_id = fields.Many2one('hr.shift.planning.pattern', string="Patrón", required=True)
-    day_number = fields.Integer(string="Día", required=True)
+    day = fields.Integer(string="Día", required=True)
     shift_template_id = fields.Many2one('hr.shift.template', string='Plantilla de turno')
 
     is_rest = fields.Boolean(string="Descanso")
