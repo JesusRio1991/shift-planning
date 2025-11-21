@@ -12,7 +12,7 @@ class HrEmployee(models.Model):
         string="Shift Pattern"
     )
 
-    def generate_single_shift(self):
+    def generate_shifts_from_pattern(self, days_to_generate=14):
         """Crea un turno de prueba de un día para el empleado"""
         shift_obj = self.env['hr.shift.planning.shift']
 
