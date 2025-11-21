@@ -1,3 +1,4 @@
+# models/hr_shift_planning_pattern_line.py
 from odoo import models, fields
 
 class HrShiftPlanningPatternLine(models.Model):
