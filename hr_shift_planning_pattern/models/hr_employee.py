@@ -1,4 +1,4 @@
-from odoo import models
+from odoo import models, fields  # <-- agrega fields
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
