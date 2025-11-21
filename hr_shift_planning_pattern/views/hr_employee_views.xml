@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <sheet position="inside">
                 <group string="Turnos">
-                    <!--<field name="shift_pattern_id" />-->
+                    <field name="shift_pattern_id" />
                 </group>
                 <button name="generate_shifts_from_pattern"
                     type="object"
