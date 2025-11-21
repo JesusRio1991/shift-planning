@@ -33,10 +33,14 @@ class HrEmployee(models.Model):
                 'employee_id': employee.id,
                 'template_id': template.id,
             })
+            
+            hours = int(template.start_time)
+            minutes = int((template.start_time % 1) * 60)
+            start_dt = datetime.combine(date.today(), time(hour=hours, minute=minutes))
 
-            # Crear la línea del turno con fechas de hoy
-            start_dt = datetime.combine(date.today(), template.start_time)
-            end_dt = datetime.combine(date.today(), template.end_time)
+            hours = int(template.end_time)
+            minutes = int((template.end_time % 1) * 60)
+            end_dt = datetime.combine(date.today(), time(hour=hours, minute=minutes))
 
             self.env['hr.shift.planning.line'].create({
                 'shift_id': shift.id,
