@@ -10,3 +10,8 @@ class HrShiftPlanningPattern(models.Model):
     employee_id = fields.Many2one('hr.employee', string="Empleado")
     auto_generate = fields.Boolean(string="Auto-generar")
     line_ids = fields.One2many('hr.shift.planning.pattern.line', 'pattern_id', string="Líneas del patrón")
+
+    def generate_shifts(self):
+        # método vacío para que la vista cargue
+        print("Generar turnos ejecutado")  
+        return True
