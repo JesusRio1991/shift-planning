@@ -2,16 +2,17 @@
     <record id="view_hr_employee_form_inherit_shift" model="ir.ui.view">
         <field name="name">hr.employee.form.inherit.shift</field>
         <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <sheet position="inside">
                 <group string="Turnos">
-                    <field name="shift_pattern_id" />
+                    <field name="shift_pattern_id"/>
+
+                    <button name="action_open_shift_wizard"
+                            type="object"
+                            string="Generar turnos"
+                            class="btn-primary"/>
                 </group>
-                <button name="generate_shifts_from_pattern"
-                    type="object"
-                    string="Generar turnos"
-                    class="btn-primary" />
             </sheet>
         </field>
     </record>
