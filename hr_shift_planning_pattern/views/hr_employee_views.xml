@@ -8,11 +8,11 @@
                 <group string="Turnos">
                     <field name="shift_pattern_id" />
                 </group>
+                <button name="generate_shifts_from_pattern"
+                    type="object"
+                    string="Generar turnos"
+                    class="btn-primary" />
             </sheet>
-            <button name="generate_shifts_from_pattern"
-                type="object"
-                string="Generar turnos"
-                class="btn-primary" />
         </field>
     </record>
 </odoo>
