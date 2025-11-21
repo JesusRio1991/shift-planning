@@ -6,15 +6,15 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- Menú bajo Turnos -->
-    <menuitem id="menu_hr_shift_planning_pattern_root" 
-              name="Turnos" 
-              parent="hr.menu_hr_root"/>
+    <!-- Menú raíz del módulo -->
+    <menuitem id="menu_hr_shift_root"
+              name="Gestión de Turnos"
+              sequence="10"/>
 
+    <!-- Submenú -->
     <menuitem id="menu_hr_shift_planning_pattern"
-          name="Patrones"
-          parent="hr_shift.shift_planning_root"
-          action="action_hr_shift_planning_pattern"
-          sequence="10"/>
-
+              name="Patrones"
+              parent="menu_hr_shift_root"
+              action="action_hr_shift_planning_pattern"
+              sequence="10"/>
 </odoo>
