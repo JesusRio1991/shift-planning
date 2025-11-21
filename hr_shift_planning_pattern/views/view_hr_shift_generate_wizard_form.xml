@@ -1,0 +1,17 @@
+<record id="view_hr_shift_generate_wizard_form" model="ir.ui.view">
+    <field name="name">hr.shift.generate.wizard.form</field>
+    <field name="model">hr.shift.generate.wizard</field>
+    <field name="arch" type="xml">
+        <form string="Generate Shifts">
+            <group>
+                <field name="employee_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+            </group>
+            <footer>
+                <button string="Generate" type="object" name="action_generate_shifts" class="btn-primary"/>
+                <button string="Cancel" class="btn-secondary" special="cancel"/>
+            </footer>
+        </form>
+    </field>
+</record>

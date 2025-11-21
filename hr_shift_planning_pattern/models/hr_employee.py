@@ -12,6 +12,19 @@ class HrEmployee(models.Model):
         'hr.shift.planning.pattern',
         string="Shift Pattern"
     )
+    
+    def action_open_shift_wizard(self):
+        self.ensure_one()
+        return {
+            'name': "Generate Shifts",
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr.shift.generate.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_employee_id': self.id,
+            },
+        }
 
     def generate_shifts_from_pattern(self, days_to_generate=14):
         """Crea un turno de prueba de un día para el empleado"""
