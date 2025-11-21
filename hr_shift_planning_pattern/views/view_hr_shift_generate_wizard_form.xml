@@ -3,11 +3,13 @@
     <field name="model">hr.shift.generate.wizard</field>
     <field name="arch" type="xml">
         <form string="Generate Shifts">
-            <group>
-                <field name="employee_id"/>
-                <field name="start_date"/>
-                <field name="end_date"/>
-            </group>
+            <sheet>
+                <group>
+                    <field name="employee_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </group>
+            </sheet>
             <footer>
                 <button string="Generate" type="object" name="action_generate_shifts" class="btn-primary"/>
                 <button string="Cancel" class="btn-secondary" special="cancel"/>
