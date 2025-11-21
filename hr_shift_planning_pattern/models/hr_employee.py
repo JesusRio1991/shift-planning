@@ -32,7 +32,7 @@ class HrEmployee(models.Model):
                     continue
 
                 # Verificar que el template tenga fechas válidas
-                if not template.date_start or not template.date_end:
+                if not template.start_date or not template.end_date:
                     _logger.warning(
                         "Empleado %s: el template '%s' no tiene fechas válidas, se omite.",
                         employee.name,
