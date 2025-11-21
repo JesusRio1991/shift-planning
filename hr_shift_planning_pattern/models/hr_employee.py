@@ -14,10 +14,7 @@ class HrEmployee(models.Model):
     )
 
     def generate_shifts_from_pattern(self, days_to_generate=14):
-        """
-        Genera los turnos de los empleados según su patrón para un rango de días.
-        Por defecto genera 14 días hacia adelante.
-        """
+        """Genera los turnos de los empleados según su patrón para un rango de días"""
         shift_obj = self.env['hr.shift.planning.shift']
 
         for employee in self:
@@ -39,16 +36,13 @@ class HrEmployee(models.Model):
                     _logger.warning("Empleado %s: línea del patrón sin template, se omite.", employee.name)
                     continue
 
-                # Crear el shift
+                # Crear el shift solo con template y empleado
                 shift = shift_obj.create({
                     'employee_id': employee.id,
                     'template_id': template.id,
-                    # Guardamos fechas para que _generate_shift_lines las use
-                    'date_start': start_date,
-                    'date_end': end_date,
                 })
 
-                # Genera automáticamente las líneas del turno usando el rango de fechas
+                # Genera automáticamente las líneas del turno usando un rango de fechas
                 try:
                     shift._generate_shift_lines(start_date=start_date, end_date=end_date)
                 except Exception as e:
@@ -58,4 +52,5 @@ class HrEmployee(models.Model):
                         template.name,
                         e
                     )
+
         return True
