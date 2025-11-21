@@ -21,7 +21,7 @@
                         <field name="name"/>
                         <field name="line_ids">
                             <tree editable="bottom">
-                                <field name="day_number"/>
+                                <field name="day"/>
                                 <field name="shift_template_id"/>
                                 <field name="is_rest"/>
                             </tree>

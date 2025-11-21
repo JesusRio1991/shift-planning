@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class HrShiftPlanningPatternLine(models.Model):
     _name = 'hr.shift.planning.pattern.line'
     _description = 'Línea de patrón de turno'
-    _order = 'day_number asc'
+    _order = 'day asc'
 
     pattern_id = fields.Many2one('hr.shift.planning.pattern', string="Patrón", required=True)
     day = fields.Integer(string="Día", required=True)
@@ -13,7 +13,7 @@ class HrShiftPlanningPatternLine(models.Model):
 
     _sql_constraints = [
         ('unique_day_pattern',
-         'unique(pattern_id, day_number)',
+         'unique(pattern_id, day)',
          'Cada día solo puede aparecer una vez por patrón.')
     ]
 

@@ -17,12 +17,12 @@ class HrShiftPlanningShift(models.Model):
         current_date = start_date
         while current_date <= end_date:
             weekday = str(current_date.isoweekday())  # 1=lunes ... 7=domingo
-            line_template = pattern.line_ids.filtered(lambda l: l.day_number == weekday)
+            line_template = pattern.line_ids.filtered(lambda l: l.day == weekday)
             if line_template:
                 self.env['hr.shift.planning.line'].create({
                     'shift_id': shift.id,
                     'template_id': line_template.template_id.id,
-                    'day_number': weekday,
+                    'day': weekday,
                     'start_date': current_date,
                 })
             current_date += timedelta(days=1)
