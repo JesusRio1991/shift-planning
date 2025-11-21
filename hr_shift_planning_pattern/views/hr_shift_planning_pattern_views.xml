@@ -20,6 +20,10 @@
             <form string="Patrón de Turno">
                 <sheet>
                     <group>
+                        <button name="generate_shifts_for_employees"
+                            type="object"
+                            string="Generar turnos para empleados"
+                            class="btn-primary" />
                         <field name="name" />
                         <field name="cycle_length" />
                         <field name="start_date" />
@@ -35,12 +39,6 @@
                             </field>
                         </page>
                     </notebook>
-                    <footer>
-                        <button name="generate_shifts_for_employees"
-                            type="object"
-                            string="Generar turnos para empleados"
-                            class="btn-primary" />
-                    </footer>
                 </sheet>
             </form>
         </field>
