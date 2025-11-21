@@ -1,7 +1,7 @@
 <odoo>
     <!-- Campos de calendario -->
     <!-- NOTA: date_start y date_end deben existir en hr.shift.planning.shift -->
-    
+
     <!-- Vista árbol de turnos -->
     <record id="view_hr_shift_tree" model="ir.ui.view">
         <field name="name">hr.shift.planning.shift.tree</field>
@@ -15,21 +15,29 @@
         </field>
     </record>
 
-    <!-- Vista calendario de turnos -->
+    <!-- Vista de calendario correcta -->
     <record id="view_hr_shift_line_calendar" model="ir.ui.view">
         <field name="name">hr.shift.line.calendar</field>
         <field name="model">hr.shift.planning.line</field>
         <field name="arch" type="xml">
             <calendar string="Calendario de Turnos"
-                      date_start="start_date"
-                      date_stop="start_date"
-                      color="color">
-                <field name="employee_id"/>
-                <field name="template_id"/>
-                <field name="state"/>
+                date_start="start_date"
+                color="color">
+                <field name="employee_id" />
+                <field name="template_id" />
+                <field name="state" />
             </calendar>
         </field>
     </record>
+
+    <!-- Acción apuntando a la vista correcta -->
+    <record id="action_hr_shift_line_calendar" model="ir.actions.act_window">
+        <field name="name">Calendario de Turnos</field>
+        <field name="res_model">hr.shift.planning.line</field>
+        <field name="view_mode">calendar,tree,form</field>
+        <field name="view_id" ref="view_hr_shift_line_calendar" />
+    </record>
+
 
     <!-- Acción para ver turnos -->
     <record id="action_hr_shift_planning_shift" model="ir.actions.act_window">
@@ -48,7 +56,11 @@
 
     <!-- Menús -->
     <menuitem id="menu_hr_shift_root" name="Turnos" sequence="10" />
-    <menuitem id="menu_hr_shift_planning_root" name="Turnos de Empleados" parent="menu_hr_shift_root" action="action_hr_shift_planning_shift" />
-    <menuitem id="menu_hr_shift_lines" name="Calendario de Turnos" parent="menu_hr_shift_root" action="action_hr_shift_line_calendar" />
+    <menuitem id="menu_hr_shift_planning_root" name="Turnos de Empleados"
+        parent="menu_hr_shift_root" action="action_hr_shift_planning_shift" />
+    <menuitem id="menu_hr_shift_lines"
+        name="Calendario de Turnos"
+        parent="menu_hr_shift_root"
+        action="action_hr_shift_line_calendar" />
 
 </odoo>
