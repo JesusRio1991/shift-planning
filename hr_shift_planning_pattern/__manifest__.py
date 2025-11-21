@@ -12,6 +12,7 @@
         "views/hr_shift_planning_pattern_menu.xml",
         "views/hr_employee_views.xml",
         'views/hr_shift_views.xml',
+        'views/view_hr_shift_generate_wizard_form.xml',
     ],
     "installable": True,
     "application": False,
