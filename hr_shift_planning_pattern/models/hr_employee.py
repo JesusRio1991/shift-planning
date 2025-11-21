@@ -40,8 +40,6 @@ class HrEmployee(models.Model):
             shift = shift_obj.create({
                 'employee_id': employee.id,
                 'template_id': template.id,
-                'start_time': start_dt,
-                'end_time': end_dt,
             })
 
             _logger.info("Turno de prueba creado para %s: %s - %s", employee.name, start_dt, end_dt)
