@@ -1,5 +1,5 @@
 # models/hr_employee.py
-from odoo import models, fields, api
+from odoo import models, fields
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
@@ -11,6 +11,7 @@ class HrEmployee(models.Model):
     )
 
     def generate_shifts_from_pattern(self):
+        """Genera los turnos del patrón asignado a este empleado"""
         for employee in self:
             pattern = employee.shift_pattern_id
             if pattern:

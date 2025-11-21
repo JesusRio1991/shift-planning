@@ -21,7 +21,7 @@
                 <button name="generate_shifts_for_employees"
                     type="object"
                     string="Generar turnos para empleados"
-                    class="btn-primary" />
+                    class="btn-primary mb-2" />
                 <sheet>
                     <group>
                         <field name="name" />

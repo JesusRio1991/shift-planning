@@ -10,6 +10,7 @@
         "security/ir.model.access.csv",
         "views/hr_shift_planning_pattern_views.xml",
         "views/hr_shift_planning_pattern_menu.xml",
+        "views/hr_employee_views.xml",
     ],
     "installable": True,
     "application": False,
