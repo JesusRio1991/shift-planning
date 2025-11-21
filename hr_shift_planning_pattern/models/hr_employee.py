@@ -29,12 +29,6 @@ class HrEmployee(models.Model):
                 _logger.warning("Empleado %s: plantilla de turno no definida.", employee.name)
                 continue
 
-            # Crear el shift
-            shift = shift_obj.create({
-                'employee_id': employee.id,
-                'template_id': template.id,
-            })
-            
             hours = int(template.start_time)
             minutes = int((template.start_time % 1) * 60)
             start_dt = datetime.combine(date.today(), time(hour=hours, minute=minutes))
@@ -43,12 +37,11 @@ class HrEmployee(models.Model):
             minutes = int((template.end_time % 1) * 60)
             end_dt = datetime.combine(date.today(), time(hour=hours, minute=minutes))
 
-            self.env['hr.shift.planning.line'].create({
-                'shift_id': shift.id,
+            shift = shift_obj.create({
                 'employee_id': employee.id,
                 'template_id': template.id,
-                'date_start': start_dt,
-                'date_end': end_dt,
+                'start_datetime': start_dt,
+                'end_datetime': end_dt,
             })
 
             _logger.info("Turno de prueba creado para %s: %s - %s", employee.name, start_dt, end_dt)
