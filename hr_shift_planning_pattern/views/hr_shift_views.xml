@@ -31,10 +31,10 @@
         <field name="model">hr.shift.planning.shift</field>
         <field name="arch" type="xml">
             <calendar string="Calendario de Turnos"
-                      date_start="shift_template_id.date_start"
-                      date_stop="shift_template_id.date_end">
+                      date_start="template_id.date_start"
+                      date_stop="template_id.date_end">
                 <field name="employee_id"/>
-                <field name="shift_template_id"/>
+                <field name="template_id"/>
             </calendar>
         </field>
     </record>
