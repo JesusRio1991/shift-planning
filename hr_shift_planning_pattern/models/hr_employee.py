@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from datetime import date, timedelta
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -12,7 +13,11 @@ class HrEmployee(models.Model):
         string="Shift Pattern"
     )
 
-    def generate_shifts_from_pattern(self):
+    def generate_shifts_from_pattern(self, days_to_generate=14):
+        """
+        Genera los turnos de los empleados según su patrón para un rango de días.
+        Por defecto genera 14 días hacia adelante.
+        """
         shift_obj = self.env['hr.shift.planning.shift']
 
         for employee in self:
@@ -20,6 +25,9 @@ class HrEmployee(models.Model):
             if not pattern:
                 _logger.warning("Empleado %s no tiene patrón de turno asignado.", employee.name)
                 continue
+
+            start_date = date.today()
+            end_date = start_date + timedelta(days=days_to_generate)
 
             for line in pattern.line_ids:
                 if line.is_rest:
@@ -31,24 +39,18 @@ class HrEmployee(models.Model):
                     _logger.warning("Empleado %s: línea del patrón sin template, se omite.", employee.name)
                     continue
 
-                # Verificar que el template tenga fechas válidas
-                if not template.start_date or not template.end_date:
-                    _logger.warning(
-                        "Empleado %s: el template '%s' no tiene fechas válidas, se omite.",
-                        employee.name,
-                        template.name
-                    )
-                    continue
-
                 # Crear el shift
                 shift = shift_obj.create({
                     'employee_id': employee.id,
                     'template_id': template.id,
+                    # Guardamos fechas para que _generate_shift_lines las use
+                    'date_start': start_date,
+                    'date_end': end_date,
                 })
 
-                # Genera automáticamente las líneas del turno con fechas y horas
+                # Genera automáticamente las líneas del turno usando el rango de fechas
                 try:
-                    shift._generate_shift_lines()
+                    shift._generate_shift_lines(start_date=start_date, end_date=end_date)
                 except Exception as e:
                     _logger.error(
                         "Error generando líneas de turno para empleado %s con template %s: %s",
