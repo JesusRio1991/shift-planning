@@ -1,21 +1,42 @@
 <odoo>
+    <!-- Vista árbol -->
     <record id="view_hr_shift_planning_pattern_tree" model="ir.ui.view">
         <field name="name">hr.shift.planning.pattern.tree</field>
         <field name="model">hr.shift.planning.pattern</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree string="Patrones de Turno">
                 <field name="name"/>
             </tree>
         </field>
     </record>
 
+    <!-- Vista formulario -->
     <record id="view_hr_shift_planning_pattern_form" model="ir.ui.view">
         <field name="name">hr.shift.planning.pattern.form</field>
         <field name="model">hr.shift.planning.pattern</field>
         <field name="arch" type="xml">
-            <form>
-                …
+            <form string="Patrón de Turno">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="line_ids">
+                            <tree editable="bottom">
+                                <field name="day_number"/>
+                                <field name="shift_template_id"/>
+                                <field name="is_rest"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
             </form>
         </field>
+    </record>
+
+    <!-- Acción vinculando vistas -->
+    <record id="action_hr_shift_planning_pattern" model="ir.actions.act_window">
+        <field name="name">Patrones de Turno</field>
+        <field name="res_model">hr.shift.planning.pattern</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_hr_shift_planning_pattern_tree"/>
     </record>
 </odoo>
