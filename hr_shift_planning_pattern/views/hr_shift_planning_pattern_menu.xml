@@ -10,9 +10,11 @@
     <menuitem id="menu_hr_shift_planning_pattern_root" 
               name="Turnos" 
               parent="hr.menu_hr_root"/>
-              
-    <menuitem id="menu_hr_shift_planning_pattern" 
-              name="Patrones" 
-              parent="menu_hr_shift_planning_pattern_root" 
-              action="action_hr_shift_planning_pattern"/>
+
+    <menuitem id="menu_hr_shift_planning_pattern"
+          name="Patrones"
+          parent="hr_shift.shift_planning_root"
+          action="action_hr_shift_planning_pattern"
+          sequence="10"/>
+
 </odoo>
