@@ -46,14 +46,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- Acción calendario -->
-    <record id="action_hr_shift_line_calendar" model="ir.actions.act_window">
-        <field name="name">Calendario de Turnos</field>
-        <field name="res_model">hr.shift.planning.shift</field>
-        <field name="view_mode">calendar,tree,form</field>
-        <field name="view_id" ref="view_hr_shift_calendar" />
-    </record>
-
     <!-- Menús -->
     <menuitem id="menu_hr_shift_root" name="Turnos" sequence="10" />
     <menuitem id="menu_hr_shift_planning_root" name="Turnos de Empleados"
