@@ -8,7 +8,6 @@
                 <field name="name"/>
                 <field name="cycle_length"/>
                 <field name="start_date"/>
-                <field name="employee_id"/>
                 <field name="auto_generate"/>
             </tree>
         </field>
@@ -25,7 +24,6 @@
                         <field name="name"/>
                         <field name="cycle_length"/>
                         <field name="start_date"/>
-                        <field name="employee_id"/>
                         <field name="auto_generate"/>
                     </group>
                     <notebook>
