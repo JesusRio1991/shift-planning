@@ -3,6 +3,11 @@ from odoo import models
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
+    shift_pattern_id = fields.Many2one(
+        'hr.shift.planning.pattern',
+        string="Shift Pattern"
+    )
+
     def generate_shifts_from_pattern(self):
         shift_obj = self.env['hr.shift.planning.shift']
         for employee in self:
