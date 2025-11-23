@@ -11,44 +11,91 @@ class HrShiftGenerateWizard(models.TransientModel):
     end_date = fields.Date(required=True)
 
     def action_generate_shifts(self):
+        """
+        Genera turnos para un empleado según un patrón (6+2 o cualquier pattern).
+        Crea:
+            - hr.shift.planning por semana
+            - hr.shift.planning.shift para el empleado
+            - hr.shift.planning.line por día
+        """
         self.ensure_one()
 
         employee = self.employee_id
         pattern = employee.shift_pattern_id
 
+        if not employee:
+            raise UserError("Debe seleccionar un empleado.")
+
         if not pattern:
-            raise UserError("El empleado no tiene ningún patrón asignado.")
+            raise UserError("El empleado no tiene un patrón asignado.")
 
-        pattern_lines = pattern.line_ids.sorted('day')
-
+        pattern_lines = pattern.line_ids.sorted("day")
         if not pattern_lines:
             raise UserError("El patrón no tiene líneas definidas.")
 
-        # Una sola planificación para todo el rango
-        planning = self.env['hr.shift.planning'].create({
-            'employee_id': employee.id,
-            'start_date': self.start_date,
-        })
-
+        # Preparar fechas
         current_date = self.start_date
+        end_date = self.end_date
 
-        while current_date <= self.end_date:
+        # Grupo de lines por index para acceso rápido
+        pattern_length = len(pattern_lines)
 
-            # Posición dinámica dentro del patrón (para 6+2 se mueve cada semana)
-            offset = (current_date - self.start_date).days % len(pattern_lines)
-            pattern_line = pattern_lines[offset]
+        # Recorrer día a día
+        while current_date <= end_date:
 
-            if not pattern_line.is_rest:
+            # Calcular año y semana ISO de este día
+            iso_year, iso_week, _ = current_date.isocalendar()
 
-                template = pattern_line.shift_template_id
+            # Buscar si ya existe planning para esta semana
+            planning = self.env["hr.shift.planning"].search([
+                ("year", "=", iso_year),
+                ("week_number", "=", iso_week)
+            ], limit=1)
 
-                # Crear turno individual por día
-                self.env['hr.shift.planning.line'].create({
-                    'shift_id': planning.id,
-                    'template_id': template.id,
-                    'date': current_date,
+            if not planning:
+                # Crear nuevo planning semanal
+                planning = self.env["hr.shift.planning"].create({
+                    "year": iso_year,
+                    "week_number": iso_week,
                 })
 
+            # Buscar/crear shift del empleado para esta semana
+            shift = self.env["hr.shift.planning.shift"].search([
+                ("planning_id", "=", planning.id),
+                ("employee_id", "=", employee.id),
+            ], limit=1)
+
+            if not shift:
+                shift = self.env["hr.shift.planning.shift"].create({
+                    "planning_id": planning.id,
+                    "employee_id": employee.id,
+                })
+
+            # ———————————————————————————————
+            # Determinar qué turno toca según pattern
+            # ———————————————————————————————
+            day_offset = (current_date - self.start_date).days % pattern_length
+            pattern_line = pattern_lines[day_offset]
+
+            if not pattern_line.is_rest:
+                # Insertar línea de turno diario
+                self.env["hr.shift.planning.line"].create({
+                    "shift_id": shift.id,
+                    "template_id": pattern_line.shift_template_id.id,
+                    "day_number": str(current_date.weekday()),
+                    # fecha real calculada por compute
+                })
+
+            # Avanzar un día
             current_date += timedelta(days=1)
 
-        return {'type': 'ir.actions.act_window_close'}
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": "Turnos generados",
+                "message": "Los turnos se han generado correctamente.",
+                "type": "success",
+                "sticky": False,
+            },
+        }
