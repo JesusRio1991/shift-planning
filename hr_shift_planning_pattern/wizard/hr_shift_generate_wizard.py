@@ -19,7 +19,7 @@ class HrShiftGenerateWizard(models.TransientModel):
         if not pattern:
             raise UserError("El empleado no tiene ningún patrón asignado.")
 
-        pattern_lines = pattern.line_ids.sorted('day_number')
+        pattern_lines = pattern.line_ids.sorted('day')
 
         if not pattern_lines:
             raise UserError("El patrón no tiene líneas definidas.")
