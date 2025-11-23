@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 from datetime import datetime, timedelta, time
 from odoo.exceptions import UserError
 
@@ -6,7 +6,7 @@ class HrShiftGenerateWizard(models.TransientModel):
     _name = 'hr.shift.generate.wizard'
     _description = 'Generate Shifts From Pattern'
 
-    employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
+    employee_id = fields.Many2one('hr.employee', required=True)
     start_date = fields.Date(required=True)
     end_date = fields.Date(required=True)
 
@@ -19,39 +19,34 @@ class HrShiftGenerateWizard(models.TransientModel):
         if not pattern:
             raise UserError("El empleado no tiene ningún patrón asignado.")
 
-        pattern_lines = pattern.line_ids.sorted('day')
+        pattern_lines = pattern.line_ids.sorted('day_number')
 
         if not pattern_lines:
             raise UserError("El patrón no tiene líneas definidas.")
+
+        # Una sola planificación para todo el rango
+        planning = self.env['hr.shift.planning'].create({
+            'employee_id': employee.id,
+            'start_date': self.start_date,
+        })
 
         current_date = self.start_date
 
         while current_date <= self.end_date:
 
-            # Elegir la línea del patrón según posición
-            day_index = (current_date - self.start_date).days % len(pattern_lines)
-            pattern_line = pattern_lines[day_index]
+            # Posición dinámica dentro del patrón (para 6+2 se mueve cada semana)
+            offset = (current_date - self.start_date).days % len(pattern_lines)
+            pattern_line = pattern_lines[offset]
 
-            # Saltar días de descanso
             if not pattern_line.is_rest:
 
                 template = pattern_line.shift_template_id
 
-                # Convertir horas float → datetime
-                start_hour = int(template.start_time)
-                start_minute = int((template.start_time % 1) * 60)
-                end_hour = int(template.end_time)
-                end_minute = int((template.end_time % 1) * 60)
-
-                start_dt = datetime.combine(current_date, time(start_hour, start_minute))
-                end_dt = datetime.combine(current_date, time(end_hour, end_minute))
-
-                # Crear turno
-                self.env['hr.shift.planning.shift'].create({
-                    'employee_id': employee.id,
-                    'start_datetime': start_dt,
-                    'end_datetime': end_dt,
+                # Crear turno individual por día
+                self.env['hr.shift.planning.line'].create({
+                    'shift_id': planning.id,
                     'template_id': template.id,
+                    'date': current_date,
                 })
 
             current_date += timedelta(days=1)
