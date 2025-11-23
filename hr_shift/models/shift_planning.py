@@ -393,17 +393,15 @@ class ShiftPlanningLine(models.Model):
     def _group_expand_template_id(self, templates, domain, order):
         return self.env["hr.shift.template"].search([])
 
-    @api.depends("day_number", "template_id", "state")
+    @api.depends("template_id", "state", "employee_id")
     def _compute_display_name(self):
         for line in self:
-            line.display_name = (
-                f"{_(dict(WEEK_DAYS_SELECTION).get(line.day_number))} - "
-                f"""
-                {line.template_id.name
-                or dict(
-                    self._fields['state']._description_selection(self.env)
-                )[line.state]}"""
+            turn_name = (
+                line.template_id.name
+                or dict(self._fields['state']._description_selection(self.env))[line.state]
             )
+            emp_name = line.employee_id.name or ""
+            line.display_name = f"{emp_name} – {turn_name}"
 
     @api.depends("planning_id", "day_number", "template_id")
     def _compute_shift_time(self):
