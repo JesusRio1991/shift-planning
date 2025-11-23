@@ -83,6 +83,8 @@ class HrShiftGenerateWizard(models.TransientModel):
                     "shift_id": shift.id,
                     "template_id": pattern_line.shift_template_id.id,
                     "day_number": str(current_date.weekday()),
+                    "start_hour": pattern_line.shift_template_id.start_time,
+                    "start_hour": pattern_line.shift_template_id.end_time,
                     # fecha real calculada por compute
                 })
 
